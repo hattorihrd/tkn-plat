@@ -1,0 +1,63 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: task-kaniko-build
+  namespace: ia-hattorihrd-ns-tekton
+spec:
+  params:
+    - name: gitrevision
+    - default: default
+  inputs:
+    resources:
+      - name: git-resource
+        type: git
+  outputs:
+    resources:
+      - name: node-app-image
+        type: image
+  steps:
+          # - name: echo
+          # image: debian
+          #  command: 
+          # - "echo $(params.gitrevision)"
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:latest
+      command:
+        - /kaniko/executor
+      args:
+      - --dockerfile=/workspace/git-resource/src/node-app/Dockerfile
+      - --destination=hattorihrd/node-app:$(params.gitrevision)
+      - --context=/workspace/git-resource/src/node-app
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: task-deploy
+  namespace: ia-hattorihrd-ns-tekton
+spec:
+  params:
+    - name: gitrevision
+    - default: latest
+  inputs:
+    resources:
+      - name: git-resource
+        type: git
+  steps:
+    - name: step-deploy
+      image: lachlanevenson/k8s-kubectl
+      command:
+        - kubectl
+      args:
+      - "apply"
+      - "-f"
+      - "/workspace/git-resource/service-deployment.yaml"
+    - name: image-update
+      image: lachlanevenson/k8s-kubectl
+      command:
+        - kubectl
+      args:
+      - "set"
+      - "image"
+      - "deployment/node-app"
+      - "node-app=hattorihrd/node-app:$(params.gitrevision)"
+      - "--record"

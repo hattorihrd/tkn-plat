@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: pipeline-build-deploy
+  namespace: ia-hattorihrd-ns-tekton
+spec:
+  resources:
+    - name: pipeline-git
+      type: git
+    - name: pipeline-image
+      type: image
+  tasks:
+    - name: pipeline-task-kaniko-build
+      taskRef:
+        name: task-kaniko-build
+      resources:
+        inputs:
+          - name: git-resource
+            resource: pipeline-git
+        outputs:
+          - name: node-app-image
+            resource: pipeline-image
+    - name: pipeline-task-deploy
+      taskRef:
+        name: task-deploy
+      runAfter:
+        - pipeline-task-kaniko-build
+      resources:
+        inputs:
+          - name: git-resource
+            resource: pipeline-git

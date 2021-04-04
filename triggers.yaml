@@ -1,0 +1,66 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: ia-hattorihrd-triggertemplate
+  namespace: ia-hattorihrd-ns-tekton
+spec:
+  params:
+    - name: gitrevision
+      description: The git revision
+      default: master
+          # - name: gitrepositoryurl
+          # description: The git repository url
+    - name: namespace
+      description: The namespace to create the resources
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: pipeline-build-deploy-run-
+        namespace: ia-hattorihrd-ns-tekton
+      spec:
+        serviceAccountName: hattorihrd-docker-account
+        #serviceAccountName: tekton-triggers-admin
+        #serviceAccountName: default
+        params:
+          - name: gitrevision
+            value: $(tt.params.gitrevision)
+        pipelineRef:
+          name: pipeline-build-deploy
+        resources:     
+          - name: pipeline-git
+            resourceRef:
+              name: git-resource
+          - name: pipeline-image
+            resourceRef:
+              name: node-app-image
+      status: {}
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: ia-hattorihrd-pipelinebinding
+  namespace: ia-hattorihrd-ns-tekton
+spec:
+  params:
+    - name: gitrevision
+      value: $(body.head_commit.id)
+    - name: namespace
+      value: ia-hattorihrd-ns-tekton
+      # - name: gitrepositoryurl
+      # value: "https://github.com/tkn-app"
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: ia-hattorihrd-eventlistener
+  namespace: ia-hattorihrd-ns-tekton
+spec: 
+  serviceAccountName: tekton-triggers-admin
+  triggers:
+    - bindings:
+      - ref: ia-hattorihrd-pipelinebinding
+      template:
+        ref: ia-hattorihrd-triggertemplate
+---
+#fin

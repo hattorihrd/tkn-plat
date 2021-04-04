@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: pipeline-build-deploy
+  namespace: ia-hattorihrd-ns-tekton
+spec:
+  params:
+    - name: gitrevision
+      type: string
+      description: git commit_id
+      default: latest
+  resources:
+    - name: pipeline-git
+      type: git
+    - name: pipeline-image
+      type: image
+  tasks:
+    - name: pipeline-task-kaniko-build
+      taskRef:
+        name: task-kaniko-build
+      params:
+        - name: gitrevision
+          value: $(params.gitrevision)
+      resources:
+        inputs:
+          - name: git-resource
+            resource: pipeline-git
+        outputs:
+          - name: node-app-image
+            resource: pipeline-image
+    - name: pipeline-task-deploy
+      taskRef:
+        name: task-deploy
+      runAfter:
+        - pipeline-task-kaniko-build
+      params:
+        - name: gitrevision
+          value: $(params.gitrevision)
+      resources:
+        inputs:
+          - name: git-resource
+            resource: pipeline-git

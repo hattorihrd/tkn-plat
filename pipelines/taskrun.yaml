@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  namespace: ia-hattorihrd-ns-tekton
+  generateName: taskrun-kaniko-build-
+spec:
+  serviceAccountName: hattorihrd-docker-account
+  taskRef:
+    name: task-kaniko-build
+  inputs:
+    resources:
+    - name: git-resource
+      resourceRef:
+        name: git-resource
+  outputs:
+    resources:
+    - name: node-app-image
+      resourceRef:
+        name: node-app-image

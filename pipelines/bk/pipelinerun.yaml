@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  creationTimestamp: null
+  generateName: pipeline-build-deploy-run-
+  namespace: ia-hattorihrd-ns-tekton
+spec:
+  ServiceAccountName: hattorihrd-docker-account
+  pipelineRef:
+    name: pipeline-build-deploy
+  resources:
+  - name: pipeline-git
+    resourceRef:
+      name: git-resource
+  - name: pipeline-image
+    resourceRef:
+      name: node-app-image
+status: {}

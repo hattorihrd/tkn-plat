@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ia-hattorihrd-eventlistener
+  namespace: ia-hattorihrd-ns-tekton
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - host: "el.ia-hattorihrd.com"
+      http:
+        paths:
+          - backend:
+              serviceName: el-ia-hattorihrd-eventlistener # REPLACE WITH YOUR SERVICE NAME FROM STEP 2
+              servicePort: 8080
+---
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tekton-dashboard
+  namespace: tekton-pipelines
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - host: "tekton-dashboard.ia-hattorihrd.com"
+      http:
+        paths:
+          - backend:
+              serviceName: tekton-dashboard # REPLACE WITH YOUR SERVICE NAME FROM STEP 2
+              servicePort: 9097
