@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  namespace: YOUR-NAMESPACE-NAME
+  namespace: YOUR-NAMESPACE
   generateName: taskrun-kaniko-build-
 spec:
   serviceAccountName: YOUR-SERVICEACCOUTNAME
