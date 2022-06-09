@@ -2,12 +2,12 @@ apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
   name: git-resource
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 spec:
   type: git
   params:
   - name: url
-    value: https://github.com/hattorihrd/tkn-app.git
+    value: https://github.com/YOUR-REPOSITORY-NAME/tkn-app.git
   - name: revision
     value: main
 
@@ -16,9 +16,9 @@ apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
   name: node-app-image
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 spec:
   type: image
   params:
   - name: url
-    value: hattorihrd/node-app:latest
+    value: YOUR-RESISTORY-NAME/node-app:latest
