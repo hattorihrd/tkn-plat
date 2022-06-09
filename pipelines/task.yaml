@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
   name: task-kaniko-build
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 spec:
   params:
     - name: gitrevision
@@ -16,24 +16,20 @@ spec:
       - name: node-app-image
         type: image
   steps:
-          # - name: echo
-          # image: debian
-          #  command: 
-          # - "echo $(params.gitrevision)"
     - name: build-and-push
       image: gcr.io/kaniko-project/executor:latest
       command:
         - /kaniko/executor
       args:
       - --dockerfile=/workspace/git-resource/src/node-app/Dockerfile
-      - --destination=hattorihrd/node-app:$(params.gitrevision)
+      - --destination=YOUR-RESISTORY-NAME/node-app:$(params.gitrevision)
       - --context=/workspace/git-resource/src/node-app
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
   name: task-deploy
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 spec:
   params:
     - name: gitrevision
@@ -59,5 +55,5 @@ spec:
       - "set"
       - "image"
       - "deployment/node-app"
-      - "node-app=hattorihrd/node-app:$(params.gitrevision)"
+      - "node-app=YOUR-RESISTORY-NAME/node-app:$(params.gitrevision)"
       - "--record"
