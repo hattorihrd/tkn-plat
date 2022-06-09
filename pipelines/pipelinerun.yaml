@@ -3,9 +3,9 @@ kind: PipelineRun
 metadata:
   creationTimestamp: null
   generateName: pipeline-build-deploy-run-
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 spec:
-  ServiceAccountName: hattorihrd-docker-account
+  ServiceAccountName: YOUR-SERVICEACCOUTNAME
   pipelineRef:
     name: pipeline-build-deploy
   resources:
