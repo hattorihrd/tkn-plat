@@ -1,1 +1,1 @@
-kubectl create clusterrolebinding hattorihrd-docker-account --serviceaccount=ia-hattorihrd-ns-tekton:hattorihrd-docker-account --clusterrole=cluster-admin
+kubectl create clusterrolebinding YOUR-SERVICEACCOUT-NAME --serviceaccount=ia-YOUR-NAMESPACE:YOUR-SERVICEACCOUT-NAME --clusterrole=cluster-admin
