@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
   name: pipeline-build-deploy
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 spec:
   params:
     - name: gitrevision
