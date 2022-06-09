@@ -1,25 +1,19 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: hattorihrd-docker-secret
-  namespace: ia-hattorihrd-ns-tekton
+  name: YOUR-SECRET-NAME
+  namespace: YOUR-NAMESPACE
   annotations:
     tekton.dev/docker-0: https://index.docker.io/v1/
 type: kubernetes.io/basic-auth
 stringData:
-  username: hattorihrd
-  password: 64496912d  
-  #username: aGF0dG9yaWhyZA==
-  #password: NjQ0OTY5MTJk
-
-  # echo -n username | base64
-  # echo -n password | base64
-
+  username: YOUR-RESISTORY-USERNAME
+  password: YOUR-RESISTORY-PASSWORD
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: hattorihrd-docker-account
-  namespace: ia-hattorihrd-ns-tekton
+  name: YOUR-SERVICEACCOUT-NAME
+  namespace: YOUR-NAMESPACE
 secrets:
-  - name: hattorihrd-docker-secret
+  - name: YOUR-SECRET-NAME
