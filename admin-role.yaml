@@ -4,7 +4,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tekton-triggers-admin
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 rules:
 - apiGroups:
   - triggers.tekton.dev
@@ -29,10 +29,10 @@ rules:
   - create
   - list
   - watch
-  - delete #add
-  - get #add
-  - update #add
-  - deletecollection #add
+  - delete
+  - get
+  - update
+  - deletecollection
 - apiGroups:
   - ""
   resources:
@@ -62,14 +62,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: tekton-triggers-admin
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 ---
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: tekton-triggers-admin-binding
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 subjects:
 - kind: ServiceAccount
   name: tekton-triggers-admin
@@ -103,7 +103,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: tekton-triggers-admin
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -114,7 +114,7 @@ apiVersion: triggers.tekton.dev/v1alpha1
 kind: ClusterTriggerBinding
 metadata:
   name: pipeline-clusterbinding
-  namespace : ia-hattorihrd-ns-tekton
+  namespace : YOUR-NAMESPACE
 spec:
   params:
     - name: gitrevision
