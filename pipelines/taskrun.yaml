@@ -1,10 +1,10 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  namespace: ia-hattorihrd-ns-tekton
+  namespace: YOUR-NAMESPACE-NAME
   generateName: taskrun-kaniko-build-
 spec:
-  serviceAccountName: hattorihrd-docker-account
+  serviceAccountName: YOUR-SERVICEACCOUTNAME
   taskRef:
     name: task-kaniko-build
   inputs:
